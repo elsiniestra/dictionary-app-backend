@@ -4,12 +4,12 @@ import (
 	"github.com/fallncrlss/dictionary-app-backend/model"
 )
 
-type WordApiResponse struct {
-	Id       string   `json:"id"`
+type WordAPIResponse struct {
+	ID       string   `json:"id"`
 	Word     string   `json:"word"`
 	Metadata metadata `json:"metadata"`
 	Results  []struct {
-		Id             string `json:"id,omitempty"`
+		ID             string `json:"id,omitempty"`
 		Language       string `json:"language,omitempty"`
 		Type           string `json:"type,omitempty"`
 		Word           string `json:"word,omitempty"`
@@ -26,7 +26,7 @@ type WordApiResponse struct {
 }
 
 type sense struct {
-	Id               string                              `json:"id,omitempty"`
+	ID               string                              `json:"id,omitempty"`
 	Definitions      []string                            `json:"definitions,omitempty"`
 	ShortDefinitions []string                            `json:"shortDefinitions,omitempty"`
 	Constructions    sliceResponseTextStruct             `json:"constructions,omitempty"`
@@ -51,8 +51,8 @@ type synonyms struct {
 }
 
 type thesaurusLinks struct {
-	EntryId string `json:"entry_id" json:"entry_id,omitempty"`
-	SenseId string `json:"sense_id" json:"sense_id,omitempty"`
+	EntryID string `json:"entry_id,omitempty"`
+	SenseID string `json:"sense_id,omitempty"`
 }
 
 type entries struct {
@@ -80,14 +80,14 @@ type inflections struct {
 	Regions             sliceResponseIdentifiableTextStruct `json:"regions,omitempty"`
 	Registers           sliceResponseIdentifiableTextStruct `json:"registers,omitempty"`
 	GrammaticalFeatures []struct {
-		Id   string `json:"id,omitempty"`
+		ID   string `json:"id,omitempty"`
 		Text string `json:"text,omitempty"`
 		Type string `json:"type,omitempty"`
 	} `json:"grammaticalFeatures,omitempty"`
 }
 
 type responseIdentifiableTextStruct struct {
-	Id   string `json:"id,omitempty"`
+	ID   string `json:"id,omitempty"`
 	Text string `json:"text,omitempty"`
 }
 
@@ -95,65 +95,73 @@ type responseTextStruct struct {
 	Text string `json:"text,omitempty"`
 }
 
-type sliceResponseIdentifiableTextStruct []responseIdentifiableTextStruct
-type sliceResponseTextStruct []responseTextStruct
-type sliceSynonyms []synonyms
-type sliceNotes []notes
-type sliceSenses []struct {
-	sense
-	SubSenses []sense
-}
+type (
+	sliceResponseIdentifiableTextStruct []responseIdentifiableTextStruct
+	sliceResponseTextStruct             []responseTextStruct
+	sliceSynonyms                       []synonyms
+	sliceNotes                          []notes
+	sliceSenses                         []struct {
+		sense
+		SubSenses []sense
+	}
+)
 
 // GetTextSlice TODO: there is the way to remove copy-paste of the GetTextSlice in different structures?
 func (s sliceResponseIdentifiableTextStruct) GetTextSlice() []string {
-	var result []string
-	for _, item := range s {
-		result = append(result, item.Text)
+	result := make([]string, len(s))
+
+	for i, item := range s {
+		result[i] = item.Text
 	}
+
 	return result
 }
+
 func (s sliceResponseTextStruct) GetTextSlice() []string {
-	var result []string
-	for _, item := range s {
-		result = append(result, item.Text)
+	result := make([]string, len(s))
+
+	for i, item := range s {
+		result[i] = item.Text
 	}
+
 	return result
 }
 
 func (s sliceNotes) GetTextSlice() []string {
-	var result []string
-	for _, item := range s {
-		result = append(result, item.Text)
+	result := make([]string, len(s))
+
+	for i, item := range s {
+		result[i] = item.Text
 	}
+
 	return result
 }
 
 func (s sliceSynonyms) GetTextSlice() []string {
-	var result []string
-	for _, item := range s {
-		result = append(result, item.Text)
+	result := make([]string, len(s))
+
+	for i, item := range s {
+		result[i] = item.Text
 	}
+
 	return result
 }
 
 func (s sliceSenses) ToModel() []model.WordSense {
-	var result []model.WordSense
+	result := make([]model.WordSense, len(s))
 
-	for _, sense := range s {
-		result = append(
-			result,
-			model.WordSense{
-				Definitions:      sense.Definitions,
-				ShortDefinitions: sense.ShortDefinitions,
-				Examples:         sense.Examples.GetTextSlice(),
-				Constructions:    sense.Constructions.GetTextSlice(),
-				Domains:          sense.Domains.GetTextSlice(),
-				DomainClasses:    sense.DomainClasses.GetTextSlice(),
-				SemanticClasses:  sense.SemanticClasses.GetTextSlice(),
-				Synonyms:         sense.Synonyms.GetTextSlice(),
-				Notes:            sense.Notes.GetTextSlice(),
-			},
-		)
+	for i, sense := range s {
+		result[i] = model.WordSense{
+			Definitions:      sense.Definitions,
+			ShortDefinitions: sense.ShortDefinitions,
+			Examples:         sense.Examples.GetTextSlice(),
+			Constructions:    sense.Constructions.GetTextSlice(),
+			Domains:          sense.Domains.GetTextSlice(),
+			DomainClasses:    sense.DomainClasses.GetTextSlice(),
+			SemanticClasses:  sense.SemanticClasses.GetTextSlice(),
+			Synonyms:         sense.Synonyms.GetTextSlice(),
+			Notes:            sense.Notes.GetTextSlice(),
+		}
 	}
 
 	return result

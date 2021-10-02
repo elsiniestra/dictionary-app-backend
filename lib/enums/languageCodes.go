@@ -7,7 +7,9 @@ const (
 	BritishEnglishName  = "British English"
 )
 
-var LanguageCodes = map[string]string{
-	AmericanEnglishCode: AmericanEnglishName,
-	BritishEnglishCode:  BritishEnglishName,
+func GetLanguageCodes() map[string]string {
+	return map[string]string{
+		AmericanEnglishCode: AmericanEnglishName,
+		BritishEnglishCode:  BritishEnglishName,
+	}
 }

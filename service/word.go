@@ -21,6 +21,7 @@ func (ws *WordService) GetWordWithDB(name string, language string) (*model.Word,
 	if err != nil {
 		return nil, errors.Wrap(err, "wordService.WordDBRepository.GetWord")
 	}
+
 	return word, nil
 }
 
@@ -45,5 +46,10 @@ func (ws *WordService) GetWordWithWeb(name string, languageCode string) (*model.
 }
 
 func (ws *WordService) SaveWordToDB(wordInput *model.Word) error {
-	return ws.store.Repositories.DBWord.CreateWord(wordInput)
+	err := ws.store.Repositories.DBWord.CreateWord(wordInput)
+	if err != nil {
+		return errors.Wrap(err, "SaveWordToDB failed")
+	}
+
+	return nil
 }

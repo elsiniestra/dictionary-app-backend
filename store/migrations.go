@@ -1,9 +1,9 @@
 package store
 
 import (
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	loggerPkg "github.com/fallncrlss/dictionary-app-backend/logger"
 	dynamodbPkg "github.com/fallncrlss/dictionary-app-backend/store/dynamodb"
 	"github.com/pkg/errors"
 )
@@ -39,14 +39,20 @@ func createWordTable(db *dynamodb.DynamoDB) error {
 	if err := dynamodbPkg.CreateTable(db, params); err != nil {
 		return errors.Wrap(err, "createWordTable failed")
 	}
+
 	return nil
 }
 
 func runDynamoMigrations(db *dynamodb.DynamoDB) error {
-	fmt.Println("Running Migrations...")
+	logger := loggerPkg.Get()
+
+	logger.Debug().Msg("Running Migrations...")
+
 	if err := createWordTable(db); err != nil {
 		return err
 	}
-	fmt.Println("Migrations ran successfully!")
+
+	logger.Debug().Msg("Migrations ran successfully!")
+
 	return nil
 }

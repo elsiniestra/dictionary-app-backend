@@ -15,6 +15,6 @@ func New(db *dynamodb.DynamoDB) *Repositories {
 
 	return &Repositories{
 		DBWord:  NewWordDBRepository(db),
-		WebWord: NewWordWebRepository(config.OxfordDictionaryAppId, config.OxfordDictionaryAppKey),
+		WebWord: NewWordWebRepository(config.OxfordDictionaryAppID, config.OxfordDictionaryAppKey),
 	}
 }

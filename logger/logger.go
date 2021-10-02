@@ -1,11 +1,12 @@
 package logger
 
 import (
-	"github.com/fallncrlss/dictionary-app-backend/config"
-	"github.com/rs/zerolog"
 	"os"
 	"strings"
 	"sync"
+
+	"github.com/fallncrlss/dictionary-app-backend/config"
+	"github.com/rs/zerolog"
 )
 
 type Logger struct {
@@ -40,5 +41,6 @@ func Get() *Logger {
 		}
 		logger = Logger{&zeroLogger}
 	})
+
 	return &logger
 }

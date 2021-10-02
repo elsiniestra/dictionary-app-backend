@@ -3,9 +3,10 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kelseyhightower/envconfig"
 	"log"
 	"sync"
+
+	"github.com/kelseyhightower/envconfig"
 )
 
 type Config struct {
@@ -13,7 +14,7 @@ type Config struct {
 	LogLevel               string `envconfig:"LOG_LEVEL"`
 	AWSRegion              string `envconfig:"AWS_REGION"`
 	AWSEndpoint            string `envconfig:"AWS_ENDPOINT"`
-	OxfordDictionaryAppId  string `envconfig:"OXFORD_DICTIONARY_APP_ID"`
+	OxfordDictionaryAppID  string `envconfig:"OXFORD_DICTIONARY_APP_ID"`
 	OxfordDictionaryAppKey string `envconfig:"OXFORD_DICTIONARY_APP_KEY"`
 }
 
@@ -28,11 +29,14 @@ func Get() *Config {
 		if err != nil {
 			log.Fatal(err)
 		}
+
 		configBytes, err := json.MarshalIndent(config, "", "  ")
 		if err != nil {
 			log.Fatal(err)
 		}
+
 		fmt.Println("Configuration:", string(configBytes))
 	})
+
 	return &config
 }

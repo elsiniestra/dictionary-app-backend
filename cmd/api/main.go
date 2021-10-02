@@ -1,6 +1,10 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"time"
+
 	configPkg "github.com/fallncrlss/dictionary-app-backend/config"
 	"github.com/fallncrlss/dictionary-app-backend/controller"
 	loggerPkg "github.com/fallncrlss/dictionary-app-backend/logger"
@@ -9,9 +13,6 @@ import (
 	echoPkg "github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
-	"log"
-	"net/http"
-	"time"
 )
 
 func main() {
@@ -32,7 +33,6 @@ func run() error {
 
 	// Init repository store
 	store, err := storePkg.New()
-
 	if err != nil {
 		return errors.Wrap(err, "store.New failed")
 	}

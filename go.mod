@@ -8,4 +8,6 @@ require (
 	github.com/labstack/echo/v4 v4.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.25.0
+	github.com/golangci/golangci-lint v1.42.1 // indirect
+	mvdan.cc/gofumpt v0.1.1 // indirect
 )

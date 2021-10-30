@@ -3,11 +3,14 @@ module github.com/fallncrlss/dictionary-app-backend
 go 1.16
 
 require (
-	github.com/aws/aws-sdk-go v1.40.43
+	github.com/aws/aws-sdk-go-v2 v1.10.0
+	github.com/aws/aws-sdk-go-v2/config v1.9.0
+	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.3.0
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.6.0
+	github.com/go-playground/validator/v10 v10.9.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/labstack/echo/v4 v4.5.0
+	github.com/labstack/gommon v0.3.0
 	github.com/pkg/errors v0.9.1
-	github.com/rs/zerolog v1.25.0
-	github.com/golangci/golangci-lint v1.42.1 // indirect
-	mvdan.cc/gofumpt v0.1.1 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

@@ -1,7 +1,10 @@
-package api
+package customtypes
 
 import (
-	"github.com/fallncrlss/dictionary-app-backend/model"
+	"strings"
+
+	"github.com/fallncrlss/dictionary-app-backend/internal/lib/enums"
+	"github.com/fallncrlss/dictionary-app-backend/pkg/model"
 )
 
 type WordAPIResponse struct {
@@ -56,11 +59,11 @@ type thesaurusLinks struct {
 }
 
 type entries struct {
-	Etymologies    []string         `json:"etymologies,omitempty"`
-	Notes          sliceNotes       `json:"notes,omitempty"`
-	Pronunciations []pronunciations `json:"pronunciations,omitempty"`
-	Inflections    []inflections    `json:"inflections"`
-	Senses         sliceSenses      `json:"senses,omitempty"`
+	Etymologies    []string            `json:"etymologies,omitempty"`
+	Notes          sliceNotes          `json:"notes,omitempty"`
+	Pronunciations slicePronunciations `json:"pronunciations,omitempty"`
+	Inflections    []inflections       `json:"inflections"`
+	Senses         sliceSenses         `json:"senses,omitempty"`
 }
 
 type notes struct {
@@ -68,7 +71,7 @@ type notes struct {
 	Type string `json:"type,omitempty"`
 }
 
-type pronunciations struct {
+type pronunciation struct {
 	AudioFile        string   `json:"audioFile"`
 	Dialects         []string `json:"dialects,omitempty"`
 	PhoneticNotation string   `json:"phoneticNotation,omitempty"`
@@ -100,6 +103,7 @@ type (
 	sliceResponseTextStruct             []responseTextStruct
 	sliceSynonyms                       []synonyms
 	sliceNotes                          []notes
+	slicePronunciations                 []pronunciation
 	sliceSenses                         []struct {
 		sense
 		SubSenses []sense
@@ -121,7 +125,7 @@ func (s sliceResponseTextStruct) GetTextSlice() []string {
 	result := make([]string, len(s))
 
 	for i, item := range s {
-		result[i] = item.Text
+		result[i] = strings.TrimSpace(item.Text)
 	}
 
 	return result
@@ -165,4 +169,18 @@ func (s sliceSenses) ToModel() []model.WordSense {
 	}
 
 	return result
+}
+
+func (s slicePronunciations) Get() pronunciation {
+	for _, item := range s {
+		if item.PhoneticNotation == enums.IPA {
+			return item
+		}
+	}
+
+	if len(s) == 1 {
+		return s[0]
+	}
+
+	return pronunciation{}
 }

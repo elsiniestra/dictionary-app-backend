@@ -11,7 +11,7 @@ compose-up:
 	docker-compose -f deployment/docker-compose.yml up --build
 
 compose-down:
-	docker-compose down -f deployment/docker-compose.yml
+	docker-compose -f deployment/docker-compose.yml down
 
 lint:
 	gofmt -l -w .

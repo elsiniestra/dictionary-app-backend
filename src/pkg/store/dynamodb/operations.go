@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	"github.com/fallncrlss/dictionary-app-backend/internal/lib/customerrors"
-	echoLog "github.com/labstack/gommon/log"
+	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+
+	"github.com/fallncrlss/dictionary-app-backend/src/internal/lib/customerrors"
 )
 
-func CreateTable(ctx context.Context, db *dynamodb.Client, params *dynamodb.CreateTableInput) error {
+func CreateTable(ctx context.Context, logger echo.Logger, db *dynamodb.Client, params *dynamodb.CreateTableInput) error {
 	_, err := db.DescribeTable(ctx, &dynamodb.DescribeTableInput{
 		TableName: params.TableName,
 	})
-	if err != nil {
+	if err == nil {
 		var rnfe *types.ResourceNotFoundException
-
 		if errors.As(err, &rnfe) {
 			_, err := db.CreateTable(ctx, params)
 			if err != nil {
@@ -35,10 +35,10 @@ func CreateTable(ctx context.Context, db *dynamodb.Client, params *dynamodb.Crea
 				return errors.Wrapf(err, "Waiting table \"%s\" existence failed", *params.TableName)
 			}
 
-			echoLog.Debugf("Table \"%s\" successfully created!\n", *params.TableName)
+			logger.Debugf("Table \"%s\" successfully created!\n", *params.TableName)
 		}
 
-		echoLog.Debugf("Table \"%s\" already exists, skip...\n", *params.TableName)
+		logger.Debugf("Table \"%s\" already exists, skip...\n", *params.TableName)
 	}
 
 	return nil

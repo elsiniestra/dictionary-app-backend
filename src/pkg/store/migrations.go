@@ -6,13 +6,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	echoLog "github.com/labstack/gommon/log"
+	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 
-	dynamodbPkg "github.com/fallncrlss/dictionary-app-backend/pkg/store/dynamodb"
+	dynamodbStore "github.com/fallncrlss/dictionary-app-backend/src/pkg/store/dynamodb"
 )
 
-func createWordTable(ctx context.Context, db *dynamodb.Client) error {
+func createWordTable(ctx context.Context, logger echo.Logger, db *dynamodb.Client) error {
 	params := &dynamodb.CreateTableInput{
 		AttributeDefinitions: []types.AttributeDefinition{
 			{
@@ -40,21 +40,21 @@ func createWordTable(ctx context.Context, db *dynamodb.Client) error {
 		},
 		TableName: aws.String("Word"),
 	}
-	if err := dynamodbPkg.CreateTable(ctx, db, params); err != nil {
+	if err := dynamodbStore.CreateTable(ctx, logger, db, params); err != nil {
 		return errors.Wrap(err, "createWordTable failed")
 	}
 
 	return nil
 }
 
-func runDynamoMigrations(ctx context.Context, db *dynamodb.Client) error {
-	echoLog.Debug("Running Migrations...")
+func runDynamoMigrations(ctx context.Context, logger echo.Logger, db *dynamodb.Client) error {
+	logger.Debug("Running Migrations...")
 
-	if err := createWordTable(ctx, db); err != nil {
+	if err := createWordTable(ctx, logger, db); err != nil {
 		return err
 	}
 
-	echoLog.Debug("Migrations ran successfully!")
+	logger.Debug("Migrations ran successfully!")
 
 	return nil
 }

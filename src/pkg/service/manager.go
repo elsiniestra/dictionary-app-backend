@@ -3,8 +3,9 @@ package service
 import (
 	"context"
 
-	"github.com/fallncrlss/dictionary-app-backend/pkg/store"
 	"github.com/pkg/errors"
+
+	"github.com/fallncrlss/dictionary-app-backend/src/pkg/store"
 )
 
 type Manager struct {

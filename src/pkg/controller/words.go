@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/fallncrlss/dictionary-app-backend/internal/lib/customerrors"
-	"github.com/fallncrlss/dictionary-app-backend/internal/lib/enums"
-	"github.com/fallncrlss/dictionary-app-backend/pkg/service"
+	"github.com/fallncrlss/dictionary-app-backend/src/internal/lib/customerrors"
+	"github.com/fallncrlss/dictionary-app-backend/src/internal/lib/enums"
+	"github.com/fallncrlss/dictionary-app-backend/src/pkg/service"
 	echoLog "github.com/labstack/gommon/log"
 
 	"github.com/labstack/echo/v4"
@@ -15,15 +15,18 @@ import (
 
 type WordController interface {
 	Get(ctx echo.Context) error
+	Search(ctx echo.Context) error
 }
 
 type wordController struct {
 	services *service.Manager
+	logger   *echo.Logger
 }
 
-func NewWordControllers(services *service.Manager) WordController {
+func NewWordControllers(services *service.Manager, logger *echo.Logger) WordController {
 	return &wordController{
 		services: services,
+		logger:   logger,
 	}
 }
 
@@ -71,5 +74,22 @@ func (wc *wordController) Get(ctx echo.Context) error {
 		return errors.Wrap(err, "sending a JSON response with status code failed")
 	}
 
+	return nil
+}
+
+func (wc *wordController) Search(ctx echo.Context) error {
+	searchInput := ctx.QueryParam("q")
+
+	result, err := wc.services.Word.SearchByInput(searchInput)
+	if err != nil {
+		return err
+	}
+
+	err = ctx.JSON(http.StatusOK, result)
+	if err != nil {
+		return errors.Wrap(err, "sending a JSON response with status code failed")
+	}
+
+	echoLog.Debugf("Return successful response: %s", result)
 	return nil
 }

@@ -3,15 +3,19 @@ package customtypes
 import (
 	"strings"
 
-	"github.com/fallncrlss/dictionary-app-backend/internal/lib/enums"
-	"github.com/fallncrlss/dictionary-app-backend/pkg/model"
+	"github.com/fallncrlss/dictionary-app-backend/src/internal/lib/enums"
+	"github.com/fallncrlss/dictionary-app-backend/src/pkg/model"
 )
 
-type WordAPIResponse struct {
-	ID       string   `json:"id"`
-	Word     string   `json:"word"`
-	Metadata metadata `json:"metadata"`
-	Results  []struct {
+type WordDetailsAPIResponse struct {
+	ID       string `json:"id"`
+	Word     string `json:"word"`
+	Metadata struct {
+		Operation string `json:"operation,omitempty"`
+		Provider  string `json:"provider,omitempty"`
+		Schema    string `json:"schema,omitempty"`
+	} `json:"metadata"`
+	Results []struct {
 		ID             string `json:"id,omitempty"`
 		Language       string `json:"language,omitempty"`
 		Type           string `json:"type,omitempty"`
@@ -40,12 +44,6 @@ type sense struct {
 	Synonyms         sliceSynonyms                       `json:"synonyms,omitempty"`
 	ThesaurusLinks   []thesaurusLinks                    `json:"thesaurusLinks,omitempty"`
 	Notes            sliceNotes                          `json:"notes,omitempty"`
-}
-
-type metadata struct {
-	Operation string `json:"operation,omitempty"`
-	Provider  string `json:"provider,omitempty"`
-	Schema    string `json:"schema,omitempty"`
 }
 
 type synonyms struct {

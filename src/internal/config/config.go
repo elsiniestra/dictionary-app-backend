@@ -1,11 +1,9 @@
 package config
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/kelseyhightower/envconfig"
-	echoLog "github.com/labstack/gommon/log"
 )
 
 type Config struct {
@@ -18,22 +16,16 @@ type Config struct {
 	APIRequestTimeout      time.Duration `envconfig:"API_REQUEST_TIMEOUT"`
 	ServerReadTimeout      time.Duration `envconfig:"SERVER_READ_TIMEOUT"`
 	ServerWriteTimeout     time.Duration `envconfig:"SERVER_WRITE_TIMEOUT"`
+	RedisURL               string        `envconfig:"REDIS_URL"`
 }
 
-func Get() *Config {
+func Get() (*Config, error) {
 	var config Config
 
 	err := envconfig.Process("", &config)
 	if err != nil {
-		echoLog.Fatal(err)
+		return nil, err
 	}
 
-	configBytes, err := json.MarshalIndent(config, "", "  ")
-	if err != nil {
-		echoLog.Fatal(err)
-	}
-
-	echoLog.Print("Configuration:", string(configBytes))
-
-	return &config
+	return &config, nil
 }

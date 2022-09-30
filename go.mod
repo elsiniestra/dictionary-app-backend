@@ -12,7 +12,7 @@ require (
 	github.com/go-redis/cache/v8 v8.4.3 // indirect
 	github.com/go-redis/redis/v8 v8.11.4 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/labstack/echo/v4 v4.5.0
-	github.com/labstack/gommon v0.3.0
+	github.com/labstack/echo/v4 v4.9.0
+	github.com/labstack/gommon v0.3.1
 	github.com/pkg/errors v0.9.1
 )
